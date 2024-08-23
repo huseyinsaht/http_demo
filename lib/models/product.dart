@@ -10,12 +10,23 @@ class Product{
       this.unitPrice, this.unitsInStock);
 
   Product.fromJson(Map json) {
-    id = json["id"];
+    id =  json["id"];
     categoryId = json["categoryId"];
     productName = json["productName"];
     quantityPerUnit = json["quantityPerUnit"];
-    unitPrice = json["unitPrice"];
-    unitsInStock = json["unitsInStock"];
+    // Convert unitPrice to double if it's a String
+    if (json["unitPrice"] is String) {
+      unitPrice = double.tryParse(json["unitPrice"] as String);
+    } else {
+      unitPrice = json["unitPrice"]?.toDouble();
+    }
+
+    // Handle unitsInStock, assuming it could also be a String
+    if (json["unitsInStock"] is String) {
+      unitsInStock = int.tryParse(json["unitsInStock"] as String);
+    } else {
+      unitsInStock = json["unitsInStock"];
+    }
   }
 
   Map toJson() {
